@@ -7,8 +7,9 @@
 //   d'un traitement
 
 
-/*Identifiant pour le deuxième paramètre de ftok*/
-#define MASTER_SERVICE_ID 9
+/*Identifiant pour les paramètres de ftok*/
+
+#define OS_FICHER "ORCHESTRE_SERVICE/orchestre_service.h"
 #define CODE_END 777
 
 struct oS

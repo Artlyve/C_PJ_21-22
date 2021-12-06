@@ -8,6 +8,8 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
+#include <sys/ipc.h>
+#include <sys/sem.h>
 
 #include "orchestre_service.h"
 #include "client_service.h"
@@ -72,7 +74,8 @@ int main(int argc, char * argv[])
     char *namecs = argv[5];
     
     key_t key;
-    os->sem = semget()
+    key = ftok( OS_FICHER, project_id+numService);
+    os->sem = semget(key, 1, 0);
 
     while (true)
     {
@@ -100,9 +103,8 @@ int main(int argc, char * argv[])
         
         
         /*********Réception  code **********/
-            close(fd[1]);
             int  code;
-            read(fd[0], &code, sizeof(int));
+            read(os->pipeMasterService, &code, sizeof(int));
 
 
             if(code == CODE_END){
@@ -112,32 +114,28 @@ int main(int argc, char * argv[])
                 /*REception mot de passe de l'orchestre*/
                 int len;
                 char *passwordOrchestre, *passwordClient;
-                read(fd[0], &len, sizeof(int));
-                read(fd[0], passwordOrchestre, len *sizeof(char));
+                read(os->pipeMasterService, &len, sizeof(int));
+                read(os->pipeMasterService, passwordOrchestre, len *sizeof(char));
 
                 /*Ouverture des tube nommés*/
-                int tsc = open(namesc, O_WRONLY); //Tube service -> Client
-                int tcs = open(namecs, O_WRONLY);//Tube Client ->  service
+                cs->tsc = open(namesc, O_WRONLY); //Tube service -> Client
+                cs->tcs = open(namecs, O_WRONLY);//Tube Client ->  service
 
                 /*Reception du mot de passe du client*/
-                read(tcs, passwordClient, sizeof(char));
+                read(cs->tcs, passwordClient, sizeof(char));
 
                 if(!(strcmp(passwordClient, passwordOrchestre))){
-                    write(tsc, CODE_ERROR_PSW, sizeof(int));
+                    write(cs->tsc, CODE_ERROR_PSW, sizeof(int));
 
                 }else{
-                    write(tsc, CODE_AGREE_PSW, sizeof(int));
-                    callService(numService, tcs);
-                    close(tcs);
-                    close(tsc);
+                    write(cs->tsc, CODE_AGREE_PSW, sizeof(int));
+                    callService(numService, cs->tcs);
+                    close(cs->tcs);
+                    close(cs->tsc);
                 }
 
             }
-
-
-            close(fd[0]);
             
-
 
     }
 
