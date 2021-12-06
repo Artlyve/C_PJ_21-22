@@ -20,16 +20,12 @@
  *----------------------------------------------*/
 
 // fonction de réception des données
-static void receiveData(/* fd_pipe_from_client, */ /* données à récupérer */ int fd[2], char *data)
+static void receiveData(/* fd_pipe_from_client, */ /* données à récupérer */ int fd, char *data)
 {
     printf("Receive data\n");
-    close(fd[1]);
-    
-    int ret;
-    ret = read(fd[0], data, strlen(data) *sizeof(char));
-    assert(ret == (int ) (strlen(res) *size(char)));
-    
-    close(fd[0]);
+
+    read(fd, data, strlen(data) *sizeof(char));
+
 }
 
 // fonction de traitement des données
@@ -52,23 +48,19 @@ static void computeResult(/* données récupérées, */ /* résultat */char *dat
 }
 
 // fonction d'envoi du résultat
-static void sendResult(/* fd_pipe_to_client,*/ /* résultat */ int fd[2], char *res)
+static void sendResult(/* fd_pipe_to_client,*/ /* résultat */ int fd, char *res)
 {
     printf("Sending data");
     
-    close(fd[0]);
-    int ret;
-    ret = write(fd[1], res, strlen(res) * sizeof(char) );
-    assert(ret == (int ) (strlen(res) *size(char)));
+    write(fd, res, strlen(res) * sizeof(char) );
 
-    close(fd[1]);
 }
 
 
 /*----------------------------------------------*
  * fonction appelable par le main
  *----------------------------------------------*/
-void service_compression(/* fd tubes nommés avec un client */int fd[2])
+void service_compression(/* fd tubes nommés avec un client */int fd)
 {
     // initialisations diverses
     char *res;
