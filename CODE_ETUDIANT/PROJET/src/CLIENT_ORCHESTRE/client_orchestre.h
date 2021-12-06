@@ -6,6 +6,13 @@
 //   temps avec l'orchestre
 // - les deux tubes nommés pour la communication bidirectionnelle
 
+/*** ---- INCLUDE ---- ***/
+
+#include "tubesem.h"
+
+
+/*Identifiant pour le deuxième paramètre de ftok*/
+#define CLIENT_ORCHESTRE_ID 5
 
 /*** STRUCTURES ***/
 
@@ -48,7 +55,7 @@ int semCreation(int key, int initVal);
 // ---- TUBES ----
 
 /*Création des tubes nommés*/
-void linkOrchestreClient(char *tubeCO, char *tubeOC);
+void linkOrchestreClient(char *pipe_c2o, char *pipe_o2c);
 
 /*Fermeture des pipes*/
 void closePipe(int r, int w);
@@ -56,10 +63,9 @@ void closePipe(int r, int w);
 
 // ---- THREADS CLIENT ----
 
-void mycreate(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg);
-void myjoin(pthread_t thread, void **retval);
-void myexit();
-
+void myCreate(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg);
+void myJoin(pthread_t thread, void **retval);
+void myExit(void *retval);
 
 /*Initialisation des thread*/
 void preInitThread(int N, int nbThread, bool *tab, ThreadData *data);

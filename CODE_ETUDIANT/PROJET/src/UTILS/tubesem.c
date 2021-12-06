@@ -110,3 +110,30 @@ void semDestruct(int semid)
 	int test = semctl(semid, 0, IPC_RMID);
 	myassert(test > -1, "ERROR : Issue with the destruction of the semaphore");
 }
+
+/*Réserve le Semaphore*/
+void takeSem(int semid)
+{
+	struct sembuf op = {0, -1, 0};
+	
+	int test = semop(semid, &op, 1);
+	myassert(test > -1, "ERROR : Semaphore didn't take his place");
+}
+
+/*Libère le Semaphore*/
+void letSem(int semid)
+{
+	struct sembuf op = {0, 1, 0};
+	
+	int test = semop(semid, &op, 1);
+	myassert(test > -1, "ERROR : Semaphore didn't let his place");
+}
+
+/*Attend le Semaphore*/
+void waitSem(int semid)
+{
+	struct sembuf op = {0, 0, 0};
+	
+	int test = semop(semid, &op, 1);
+	myassert(test > -1, "ERROR : Semaphore did not wait");
+}

@@ -1,4 +1,4 @@
-ifndef _TUBESEM_H_
+#ifndef _TUBESEM_H_
 #define _TUBESEM_H_
 
 /*** ---- INCLUDE ---- ***/
@@ -44,5 +44,11 @@ void semCtl(int semid, int semnum, int cmd);
 void semSetVal(int semid, int val);
 
 void semDestruct(int semid);
+
+void takeSem(int semid);
+
+void letSem(int semid);
+
+void waitSem(int semid);
 
 #endif

@@ -31,6 +31,7 @@ cextraflags="-g"
 # source communes à plusieurs programmes
 commun="../UTILS/myassert.c \
         ../UTILS/io.c \
+        ../UTILS/tubesem.c \
         ../CONFIG/config.c \
         ../ORCHESTRE_SERVICE/orchestre_service.c \
         ../CLIENT_SERVICE/client_service.c"
