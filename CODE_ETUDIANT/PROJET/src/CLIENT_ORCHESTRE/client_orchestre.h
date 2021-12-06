@@ -15,7 +15,6 @@ struct orc
 {
 	//tubes
 	int pipeOrchestreService;
-	int pipeServiceOrchestre;
 
 	//Semaphore
 	int sem;
@@ -31,19 +30,36 @@ typedef struct
 }ThreadData;
 
 
-// === SÉMAPHORES ===
+/*** ---- FONCTIONS ---- ***/
+
+
+// ---- Orchestre ----
+
+/*Création et initialisation de la structure d'orchestre*/
+struct orc *initOrchestre(int w, int r,int s);
+
+
+// ---- SÉMAPHORES ----
 
 /*Création d'un sémaphore et initialisation*/
 int semCreation(int key, int initVal);
 
 
-// === TUBES ===
+// ---- TUBES ----
 
 /*Création des tubes nommés*/
-void linkMasterClient(char *tubeCM, char *tubeMC);
+void linkOrchestreClient(char *tubeCO, char *tubeOC);
 
 /*Fermeture des pipes*/
 void closePipe(int r, int w);
+
+
+// ---- THREADS CLIENT ----
+
+void mycreate(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg);
+void myjoin(pthread_t thread, void **retval);
+void myexit();
+
 
 /*Initialisation des thread*/
 void preInitThread(int N, int nbThread, bool *tab, ThreadData *data);
