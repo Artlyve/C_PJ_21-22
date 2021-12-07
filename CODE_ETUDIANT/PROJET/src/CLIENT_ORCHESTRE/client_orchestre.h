@@ -23,8 +23,8 @@
 
 /*** STRUCTURES ***/
 
-//Structure de l'orchestre et le client
-struct oC
+//Structure du client et de l'orchestre 
+struct cO
 {
 	//Semaphore
 	int sem;
@@ -45,8 +45,8 @@ typedef struct
 
 // ---- Orchestre ----
 
-/*Création et initialisation de la structure d'orchestre*/
-struct oC *initOrchestre(int w, int r,int s);
+/*Création et initialisation de la structure entre le client et l'orchestre*/
+struct cO *initClientOrchestre(int w, int r,int s);
 
 
 // ---- SÉMAPHORES ----
@@ -58,7 +58,7 @@ int semCreation(int key, int initVal);
 // ---- TUBES ----
 
 /*Création des tubes nommés*/
-void linkOrchestreClient(char *pipe_c2o, char *pipe_o2c);
+void linkClientOrchestre(char *pipe_c2o, char *pipe_o2c);
 
 /*Fermeture des pipes*/
 void closePipe(int r, int w);

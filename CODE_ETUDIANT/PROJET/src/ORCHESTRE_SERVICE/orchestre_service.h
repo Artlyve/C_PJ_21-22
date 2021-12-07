@@ -32,6 +32,20 @@ struct oS
     int sem
 };
 
+/*** ---- FONCTIONS ---- ***/
 
+
+// ---- Orchestre ----
+
+/*Création et initialisation de la structure d'orchestre*/
+struct oS *initOrchestreService(int w, int r,int s);
+
+// ---- SÉMAPHORES ----
+
+/*Création d'un sémaphore et initialisation*/
+int semCreation(int key, int initVal);
+
+//Création du premier service
+void createFirstService(int pipeOrchestreService);
 
 #endif
