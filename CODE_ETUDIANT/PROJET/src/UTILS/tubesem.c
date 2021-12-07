@@ -11,11 +11,11 @@
 #include "myassert.h"
 #include "tubesem.h"
 
-/*** ---- FONCTIONS ---- ***/
+/************** FONCTIONS ****************/
 
-// ---- TUBES ---- //
+// ****** TUBES ******* //
 
-/*Open*/
+	/*	Open	*/
 int myOpen(const char *pathname, int flags)
 {
 	int ret = open(pathname, flags);
@@ -24,28 +24,28 @@ int myOpen(const char *pathname, int flags)
 	return ret;
 }
 
-/*Read*/
-void myRead(int fd, void *buf, size_t cmpt)
+	/*	Read	*/
+void myRead(int fd, void *buf, size_t count)
 {
 	int test = (int) read(fd, buf, count);
 	myassert(test > -1, "ERROR : No reading in the file");
 }
 
-/*Write*/
-void myWrite(int fd, const void *buf, size_t cmpt)
+	/*	Write	*/
+void myWrite(int fd, const void *buf, size_t count)
 {
 	int test = (int) write(fd, buf, count);
 	myassert(test > -1, "ERROR : No writing in the file");
 }
 
-/*Close*/
+	/*	Close	*/
 void myClose(int fd)
 {
 	int test = close(fd);
 	myassert(test > -1, "ERROR : The file didn't close");
 }
 
-/*Tube nommé*/
+	/*	Tube nommé	*/
 int myMkfifo(const char *pathname, mode_t mode)
 {
 	int ret = mkfifo(pathname, mode);
@@ -54,7 +54,7 @@ int myMkfifo(const char *pathname, mode_t mode)
 	return ret;
 }
 
-/*Tube anonyme*/
+	/*	Tube anonyme	*/
 void myPipe(int fd[])
 {
 	int test = pipe(fd);
@@ -62,9 +62,9 @@ void myPipe(int fd[])
 }
 
 
-// ---- SÉMAPHORES ---- //
+// ************ SÉMAPHORES ******** //
 
-/* Get Key*/
+	/*	 Get Key	*/
 key_t getKey(const char *pathname, int proj_id)
 {
 	int key = ftok(pathname, proj_id);
@@ -73,8 +73,8 @@ key_t getKey(const char *pathname, int proj_id)
 	return key;
 }
 
-/*Semaphore*/
-int semCreator(key_t key)
+	/*	Semaphore	*/
+int semCreate(key_t key)
 {
 	int semid = semget(key, 1, IPC_CREAT | 0641);
 	myassert(semid > -1, "ERROR : Issue when trying to create the semaphore");
@@ -82,7 +82,7 @@ int semCreator(key_t key)
 	return semid;
 }
 
-/*Get Semaphore*/
+	/*	Get Semaphore	*/
 int semGet(key_t key)
 {
 	int semid = semget(key, 1, 0);
@@ -91,22 +91,50 @@ int semGet(key_t key)
 	return semid;
 }
 
-/*Control Semaphore*/
+	/*	Control Semaphore	*/
 void semCtl(int semid, int semnum, int cmd)
 {
 	int test = semctl(semid, semnum, cmd);
 	myassert(test > -1, "ERROR : semCtl()");
 }
 
-/*Set Value Semaphore*/
+	/*	Set Value Semaphore		*/
 void semSetVal(int semid, int val){
 	int test = semctl(semid, 0, SETVAL, val);
 	myassert(test > -1,"ERROR : Issue when trying to set the value of the semaphore");
 }
 
-/*Destruction Semaphore*/
-void semDestruct(int semid)
+	/*	Destruction Semaphore	*/
+void semDestroy(int semid)
 {
 	int test = semctl(semid, 0, IPC_RMID);
 	myassert(test > -1, "ERROR : Issue with the destruction of the semaphore");
+}
+
+
+	/*	Sem lock	*/
+void lock(int semid)
+{
+	struct sembuf op = {0, -1, 0};
+	
+	int test = semop(semid, &op, 1);
+	myassert(test > -1, "ERROR : Semaphore didn't take his place");
+}
+
+	/*	Sem unlock	*/
+void unlock(int semid)
+{
+	struct sembuf op = {0, 1, 0};
+	
+	int test = semop(semid, &op, 1);
+	myassert(test > -1, "ERROR : Semaphore didn't let his place");
+}
+
+/*	Sem wait	*/
+void wait(int semid)
+{
+	struct sembuf op = {0, 0, 0};
+	
+	int test = semop(semid, &op, 1);
+	myassert(test > -1, "ERROR : Semaphore did not wait");
 }
