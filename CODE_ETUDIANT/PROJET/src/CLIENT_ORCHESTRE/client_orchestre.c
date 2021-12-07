@@ -1,7 +1,3 @@
-#if defined HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #define _XOPEN_SOURCE
 
 #include <stdlib.h>
@@ -13,16 +9,15 @@
 
 /*** ---- FONCTIONS ---- ***/
 
-// ---- ORCHESTRE ----
+// ---- CLIENT_ORCHESTRE ----
 
-/*Création et initialisation de la structure*/
-struct oC *initOrchestre(int w, int r,int s)
+/*Création et initialisation de la structure entre le client et l'orchestre*/
+struct cO *initClientOrchestre(int w, int r,int s)
 {
-	struct oC *o = malloc(sizeof(struct oC));
-
-	o->pipeOrchestreService = w;
-	o->sem = s;
-	return o;
+	struct cO *co = malloc(sizeof(struct cO));
+	
+	co->sem = s;
+	return co;
 }
 
 
@@ -41,10 +36,10 @@ int semCreation(int key, int initVal)
 // ---- TUBES ----
 
 /*Création des tubes nommés*/
-void linkOrchestreClient(char *pipe_c2o, char *pipe_o2c)
+void linkClientOrchestre(char *pipe_c2o, char *pipe_o2c)
 {
-	myMkfifo(pipe_c2o,0600); //tube nommé client vers orchestre
-    myMkfifo(pipe_o2c,0600); //tube nommé orchestre vers client
+	myMkfifo(pipe_c2o,0641); //tube nommé client vers orchestre
+    myMkfifo(pipe_o2c,0641); //tube nommé orchestre vers client
 }
 
 /*Fermeture des pipes*/
