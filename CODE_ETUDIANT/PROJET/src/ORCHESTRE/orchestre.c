@@ -7,7 +7,7 @@
 #include "client_orchestre.h"
 #include "orchestre_service.h"
 #include "service.h"
-
+#include "CLIENT_SERVICE/client_service.h"
 
 static void usage(const char *exeName, const char *message)
 {
@@ -32,22 +32,35 @@ int main(int argc, char * argv[])
     linkOrchestreClient();
     // - création d'un sémaphore pour que deux clients ne
     //   ne communiquent pas en même temps avec l'orchestre
-    semCreation();
+    int semClient = semCreation(CLIENT_ORCHESTRE_ID, 1);
     // lancement des services, avec pour chaque service :
     // - création d'un tube anonyme pour converser (orchestre vers service)
     int fdOS[2];
+    myPipe(fdOS);
     // - un sémaphore pour que le service préviene l'orchestre de la
     //   fin d'un traitement
 
     // - création de deux tubes nommés (pour chaque service) pour les
     //   communications entre les clients et les services
+
+    //tube només pour le service somme
+    myMkfifo(CLIENT_SERVICE_0, 0641);
+    myMkfifo(SERVICE_CLIENT_0, 0641);
+    //tube només pour le Service compression
+    myMkfifo(CLIENT_SERVICE_1, 0641);
+    myMkfifo(SERVICE_CLIENT_1, 0641);
+    //tube només pour le Service maximum
+    myMkfifo(CLIENT_SERVICE_2, 0641);
+    myMkfifo(SERVICE_CLIENT_2, 0641);
     
 
     while (! fin)
     {
         // ouverture ici des tubes nommés avec un client
+        myOpen(, O_WRONLY);
+        myOpen(, O_WRONLY);
         // attente d'une demande de service du client
-
+        wait(NULL);
         // détecter la fin des traitements lancés précédemment via
         // les sémaphores dédiés (attention on n'attend pas la
         // fin des traitement, on note juste ceux qui sont finis)

@@ -7,6 +7,15 @@
 #define CODE_ERROR_PSW 951
 #define CODE_AGREE_PSW 159
 
+#define CLIENT_SERVICE_0 "pipe_c2s_0"
+#define SERVICE_CLIENT_0 "pipe_s2c_0"
+
+#define CLIENT_SERVICE_1 "pipe_c2s_1"
+#define SERVICE_CLIENT_1 "pipe_s2c_1"
+
+#define CLIENT_SERVICE_2 "pipe_c2s_2"
+#define SERVICE_CLIENT_2 "pipe_s2c_2"
+
 struct cS{
     int tcs;
     int tsc;
