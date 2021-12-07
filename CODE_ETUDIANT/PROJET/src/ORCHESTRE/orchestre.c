@@ -29,15 +29,19 @@ int main(int argc, char * argv[])
 
     // Pour la communication avec les clients
     // - création de 2 tubes nommés pour converser avec les clients
+    linkOrchestreClient();
     // - création d'un sémaphore pour que deux clients ne
     //   ne communiquent pas en même temps avec l'orchestre
-    
+    semCreation();
     // lancement des services, avec pour chaque service :
     // - création d'un tube anonyme pour converser (orchestre vers service)
+    int fdOS[2];
     // - un sémaphore pour que le service préviene l'orchestre de la
     //   fin d'un traitement
+
     // - création de deux tubes nommés (pour chaque service) pour les
     //   communications entre les clients et les services
+    
 
     while (! fin)
     {

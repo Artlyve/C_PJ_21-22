@@ -69,7 +69,7 @@ int main(int argc, char * argv[])
 
     int numService = atoi(argv[1]);
     int project_id = atoi(argv[2]);
-    os->pipeMasterService = atoi(argv[3]);
+    os->pipeOrchestreService = atoi(argv[3]);
     char *namesc = argv[4];
     char *namecs = argv[5];
     
@@ -104,7 +104,7 @@ int main(int argc, char * argv[])
         
         /*********Réception  code **********/
             int  code;
-            read(os->pipeMasterService, &code, sizeof(int));
+            read(os->pipeOrchestreService, &code, sizeof(int));
 
 
             if(code == CODE_END){
@@ -114,8 +114,8 @@ int main(int argc, char * argv[])
                 /*REception mot de passe de l'orchestre*/
                 int len;
                 char *passwordOrchestre, *passwordClient;
-                read(os->pipeMasterService, &len, sizeof(int));
-                read(os->pipeMasterService, passwordOrchestre, len *sizeof(char));
+                read(os->pipeOrchestreService, &len, sizeof(int));
+                read(os->pipeOrchestreService, passwordOrchestre, len *sizeof(char));
 
                 /*Ouverture des tube nommés*/
                 cs->tsc = open(namesc, O_WRONLY); //Tube service -> Client

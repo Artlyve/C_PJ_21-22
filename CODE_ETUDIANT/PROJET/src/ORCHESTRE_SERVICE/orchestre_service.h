@@ -19,7 +19,7 @@
 struct oS
 {
     //Tube anonyme
-    int pipeMasterService;
+    int pipeOrchestreService;
 
     //Semaphore
     int sem;
