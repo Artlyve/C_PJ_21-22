@@ -10,6 +10,9 @@
 
 #include "tubesem.h"
 
+#define REQUEST_STOP -1
+#define REQUEST_AGREE 10
+#define REQUEST_ERROR -10
 
 /*Identifiant pour le deuxième paramètre de ftok*/
 #define CLIENT_ORCHESTRE_ID 5

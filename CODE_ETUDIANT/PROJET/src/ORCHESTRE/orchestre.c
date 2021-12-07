@@ -9,12 +9,26 @@
 #include "service.h"
 #include "CLIENT_SERVICE/client_service.h"
 
+#define SIZE_MAX 100
+
 static void usage(const char *exeName, const char *message)
 {
     fprintf(stderr, "usage : %s <fichier config>\n", exeName);
     if (message != NULL)
         fprintf(stderr, "message : %s\n", message);
     exit(EXIT_FAILURE);
+}
+
+char *randStr(int size){
+    const char template[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    char *str = NULL;
+    str = malloc(size * sizeof(char));
+    for(int i = 0; i < size-1; i++){
+        int j = rand() % (int) sizeof(template-1);
+        str[i] = template[j];
+    }
+    str[size] = '\0';
+    return str;
 }
 
 int main(int argc, char * argv[])
@@ -29,7 +43,7 @@ int main(int argc, char * argv[])
 
     // Pour la communication avec les clients
     // - création de 2 tubes nommés pour converser avec les clients
-    linkOrchestreClient();
+    linkOrchestreClient(CLIENT_ORCHESTRE, ORCHESTRE_CLIENT);
     // - création d'un sémaphore pour que deux clients ne
     //   ne communiquent pas en même temps avec l'orchestre
     int semClient = semCreation(CLIENT_ORCHESTRE_ID, 1);
@@ -57,8 +71,8 @@ int main(int argc, char * argv[])
     while (! fin)
     {
         // ouverture ici des tubes nommés avec un client
-        myOpen(, O_WRONLY);
-        myOpen(, O_WRONLY);
+        int tco =myOpen(CLIENT_ORCHESTRE , O_WRONLY);
+        int toc = myOpen(ORCHESTRE_CLIENT, O_WRONLY);
         // attente d'une demande de service du client
         wait(NULL);
         // détecter la fin des traitements lancés précédemment via
@@ -66,6 +80,8 @@ int main(int argc, char * argv[])
         // fin des traitement, on note juste ceux qui sont finis)
 
         // analyse de la demande du client
+        int ask;
+        myRead(tco, &ask, sizeof(int));
         // si ordre de fin
         //     envoi au client d'un code d'acceptation (via le tube nommé)
         //     marquer le booléen de fin de la boucle
@@ -81,6 +97,24 @@ int main(int argc, char * argv[])
         //     envoi du mot de passe au client (via le tube nommé)
         //     envoi des noms des tubes nommés au client (via le tube nommé)
         // finsi
+        if(ask == REQUEST_STOP){
+            myWrite(toc, REQUEST_AGREE, sizeof(int));
+            fin = true;
+        }else if(){
+            myWrite(toc, REQUEST_ERROR, sizeof(int));
+        }else if(){
+            myWrite(toc, REQUEST_ERROR, sizeof(int));
+        }else{
+            myWrite(toc, REQUEST_AGREE, sizeof(int));
+            int size = rand() % SIZE_MAX;
+            char *password = randStr(size);
+            myWrite(fdOS, CODE_SERVICE_AGREE, sizeof(int));
+            myWrite(fdOS, password, strlen(password) * sizeof(char));
+            
+            myWrite(fdOS, CODE_SERVICE_AGREE, sizeof(int));
+
+            
+        }
 
         // attente d'un accusé de réception du client
         // fermer les tubes vers le client

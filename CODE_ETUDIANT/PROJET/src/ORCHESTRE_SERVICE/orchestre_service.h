@@ -18,6 +18,7 @@
 
 #define OS_FICHER "ORCHESTRE_SERVICE/orchestre_service.h"
 #define CODE_END 777
+#define CODE_SERVICE_AGREE 654
 
 /*** ---- STRUCTURE ---- ***/
 
