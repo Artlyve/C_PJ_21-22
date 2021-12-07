@@ -21,4 +21,9 @@ struct cS{
     int tsc;
 };
 
+// ---- CLIENT_SERVICE ----
+
+/*Création et initialisation de la structure entre le client et l'orchestre*/
+struct cS *initClientService(int w, int r,int s);
+
 #endif

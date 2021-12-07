@@ -43,7 +43,7 @@ typedef struct
 /*** ---- FONCTIONS ---- ***/
 
 
-// ---- Orchestre ----
+// ---- CLIENT_ORCHESTRE ----
 
 /*Création et initialisation de la structure entre le client et l'orchestre*/
 struct cO *initClientOrchestre(int w, int r,int s);
