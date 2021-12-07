@@ -6,6 +6,10 @@
 // - le sémaphore pour que  le service indique à l'orchestre la fin
 //   d'un traitement
 
+/*** ---- INCLUDE ---- ***/
+
+#include "tubesem.h"
+
 
 /*Identifiant pour les paramètres de ftok*/
 

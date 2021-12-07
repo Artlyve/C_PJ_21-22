@@ -14,15 +14,15 @@
 #include <sys/wait.h>
 
 
-/************** FONCTIONS ****************/
+/*** ---- FONCTIONS ---- ***/
 
-// ****** TUBES ******* //
+//TUBES
 
 int myOpen(const char *pathname, int flags);
 
-void myRead(int fd, void *buf, size_t count);
+void myRead(int fd, void *buf, size_t cmpt);
 
-void myWrite(int fd, const void *buf, size_t count);
+void myWrite(int fd, const void *buf, size_t cmpt);
 
 void myClose(int fd);
 
@@ -31,11 +31,11 @@ int myMkfifo(const char *pathname, mode_t mode);
 void myPipe(int fd[]);
 
 
-// ****** SEMAPHORES ******* //
+//SÉMAPHORES
 
 key_t getKey(const char *pathname, int proj_id);
 
-int semCreate(key_t key);
+int semCreator(key_t key);
 
 int semGet(key_t key);
 
@@ -43,8 +43,12 @@ void semCtl(int semid, int semnum, int cmd);
 
 void semSetVal(int semid, int val);
 
-void semDestroy(int semid);
-void wait(int semid);
-void unlock(int semid);
-void lock(int semid);
+void semDestruct(int semid);
+
+void takeSem(int semid);
+
+void letSem(int semid);
+
+void waitSem(int semid);
+
 #endif
