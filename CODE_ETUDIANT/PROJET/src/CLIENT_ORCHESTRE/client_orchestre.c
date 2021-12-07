@@ -16,9 +16,9 @@
 // ---- ORCHESTRE ----
 
 /*Création et initialisation de la structure*/
-struct orc *initOrchestre(int w, int r,int s)
+struct oC *initOrchestre(int w, int r,int s)
 {
-	struct orc *o = malloc(sizeof(struct orc));
+	struct oC *o = malloc(sizeof(struct oC));
 
 	o->pipeOrchestreService = w;
 	o->sem = s;

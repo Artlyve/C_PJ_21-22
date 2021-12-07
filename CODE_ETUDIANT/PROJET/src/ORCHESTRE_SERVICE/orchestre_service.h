@@ -7,6 +7,9 @@
 //   d'un traitement
 
 /*** ---- INCLUDE ---- ***/
+#include <sys/sem.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
 
 #include "tubesem.h"
 
@@ -16,13 +19,16 @@
 #define OS_FICHER "ORCHESTRE_SERVICE/orchestre_service.h"
 #define CODE_END 777
 
+/*** ---- STRUCTURE ---- ***/
+
+//Structure entre l'orchestre et le service
 struct oS
 {
-    //Tube anonyme
-    int pipeOrchestreService;
+    //tube anonyme
+    int pipeOrchestreService; //tube vers le service (write)
 
     //Semaphore
-    int sem;
+    int sem
 };
 
 

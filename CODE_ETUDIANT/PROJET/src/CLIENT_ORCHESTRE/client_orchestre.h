@@ -20,13 +20,9 @@
 
 /*** STRUCTURES ***/
 
-
-//Structure de l'orchestre
-struct orc
+//Structure de l'orchestre et le client
+struct oC
 {
-	//tubes
-	int pipeOrchestreService;
-
 	//Semaphore
 	int sem;
 };
@@ -47,7 +43,7 @@ typedef struct
 // ---- Orchestre ----
 
 /*Création et initialisation de la structure d'orchestre*/
-struct orc *initOrchestre(int w, int r,int s);
+struct oC *initOrchestre(int w, int r,int s);
 
 
 // ---- SÉMAPHORES ----
