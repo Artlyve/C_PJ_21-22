@@ -52,14 +52,14 @@ static void sendResult(/* fd_pipe_to_client,*/ /* résultat */int fd, float res)
 /*----------------------------------------------*
  * fonction appelable par le main
  *----------------------------------------------*/
-void service_somme(/* fd tubes nommés avec un client */int fd)
+void service_somme(/* fd tubes nommés avec un client */int fdSC, int fdCS)
 {
     // initialisations diverses
     float *res; 
     float *data1, *data2;
-    receiveData(fd, *data1, *data2);
+    receiveData(fdCS, *data1, *data2);
     computeResult(*data1, *data2, *res);
-    sendResult(fd, *res);
+    sendResult(fdSC, *res);
 
     // libération éventuelle de ressources
 }

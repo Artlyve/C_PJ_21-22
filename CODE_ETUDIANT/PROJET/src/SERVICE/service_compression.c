@@ -60,15 +60,15 @@ static void sendResult(/* fd_pipe_to_client,*/ /* résultat */ int fd, char *res
 /*----------------------------------------------*
  * fonction appelable par le main
  *----------------------------------------------*/
-void service_compression(/* fd tubes nommés avec un client */int fd)
+void service_compression(/* fd tubes nommés avec un client */int fdSC, int fdCS)
 {
     // initialisations diverses
     char *res;
     char *data;
 
-    receiveData(/* paramètres */fd, *data);
+    receiveData(/* paramètres */fdCS, *data);
     computeResult(/* paramètres */*data, *res);
-    sendResult(/* paramètres */fd, *res);
+    sendResult(/* paramètres */fdSC, *res);
 
     // libération éventuelle de ressources
     free(res);

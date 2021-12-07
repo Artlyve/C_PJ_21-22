@@ -111,7 +111,7 @@ int main(int argc, char * argv[])
             myWrite(fdOS, CODE_SERVICE_AGREE, sizeof(int));
             myWrite(fdOS, password, strlen(password) * sizeof(char));
             
-            myWrite(fdOS, CODE_SERVICE_AGREE, sizeof(int));
+            myWrite(toc , CODE_SERVICE_AGREE, sizeof(int));
 
             
         }
