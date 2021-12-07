@@ -14,6 +14,10 @@
 /*Identifiant pour le deuxième paramètre de ftok*/
 #define CLIENT_ORCHESTRE_ID 5
 
+/*Nom des tubes entre le client et l'orchestre*/
+#define CLIENT_ORCHESTRE "pipe_c2o"
+#define ORCHESTRE_CLIENT "pipe_o2c"
+
 /*** STRUCTURES ***/
 
 
@@ -65,7 +69,6 @@ void closePipe(int r, int w);
 
 void myCreate(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg);
 void myJoin(pthread_t thread, void **retval);
-void myExit(void *retval);
 
 /*Initialisation des thread*/
 void preInitThread(int N, int nbThread, bool *tab, ThreadData *data);

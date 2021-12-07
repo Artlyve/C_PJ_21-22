@@ -69,12 +69,6 @@ void myJoin(pthread_t thread, void **retval)
 	myassert(test > -1, "ERROR : Thread isn't join !");
 }
 
-void myExit(void *retval)
-{
-	int test = pthread_exit(retval);
-	myassert(test > -1, "ERROR : Thread isn't exit !");
-}
-
 /*Initialisation des thread*/
 void preInitThread(int N, int nbThread, bool *tab, ThreadData *data)
 {
