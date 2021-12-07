@@ -16,9 +16,9 @@
 // ---- ORCHESTRE ----
 
 /*Création et initialisation de la structure*/
-struct orc *initOrchestre(int w, int r,int s)
+struct oC *initOrchestre(int w, int r,int s)
 {
-	struct orc *o = malloc(sizeof(struct orc));
+	struct oC *o = malloc(sizeof(struct oC));
 
 	o->pipeOrchestreService = w;
 	o->sem = s;
@@ -67,12 +67,6 @@ void myJoin(pthread_t thread, void **retval)
 {
 	int test = pthread_join(thread, retval);
 	myassert(test > -1, "ERROR : Thread isn't join !");
-}
-
-void myExit(void *retval)
-{
-	int test = pthread_exit(retval);
-	myassert(test > -1, "ERROR : Thread isn't exit !");
 }
 
 /*Initialisation des thread*/
