@@ -1,3 +1,7 @@
+/*PIERRE Guillaume
+SALIHI Valdrin
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -17,6 +21,7 @@
 #include "service_somme.h"
 #include "service_compression.h"
 #include "service_maximum.h"
+#include "tubesem.h"
 
 typedef struct  oS *orchestre_service;
 typedef struct cS *client_service;
@@ -36,19 +41,19 @@ static void usage(const char *exeName, const char *message)
     exit(EXIT_FAILURE);
 }
 
-void callService(int numService, int fd[2]){
+void callService(int numService, int fdSC, int fdCS){
     switch (numService)
     {
     case 0:
-        service_somme(fd);
+        service_somme(fdSC, fdCS);
         break;
 
     case 1:
-        service_compression(fd);
+        service_compression(fdSC, fdCS);
         break;
         
     case 2:
-        service_maximum(fd);
+        service_maximum(fdSC, fdCS);
         break;    
     default:
         break;
@@ -74,8 +79,8 @@ int main(int argc, char * argv[])
     char *namecs = argv[5];
     
     key_t key;
-    key = ftok( OS_FICHER, project_id+numService);
-    os->sem = semget(key, 1, 0);
+    key = getKey(OS_FICHER, project_id+numService);
+    os->sem =  semGet(key);
 
     while (true)
     {
@@ -129,11 +134,12 @@ int main(int argc, char * argv[])
 
                 }else{
                     write(cs->tsc, CODE_AGREE_PSW, sizeof(int));
-                    callService(numService, cs->tcs);
+                    callService(numService, cs->tsc, cs->tcs);
                     close(cs->tcs);
                     close(cs->tsc);
                 }
 
+                letSem(os->sem);
             }
             
 
