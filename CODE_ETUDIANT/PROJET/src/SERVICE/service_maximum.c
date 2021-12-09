@@ -77,7 +77,7 @@ void *codeThread(void *var)
         }
     }
 
-    d->res = maximum;
+    *(d->res) = maximum;
 
     return NULL;
 }
@@ -106,14 +106,14 @@ static void computeResult(/* données récupérées, */ /* résultat */int nbThr
     {
         if (i = nbThread - 1)
         {
-            preInitThread(nbThread, tabFloat, data[i-1]->fin + 1, len, data);
+            preInitThread(nbThread, tabFloat, (&data[i-1])->fin + 1, len, data);
         }
         else if (i = 0)
         {
             preInitThread(nbThread, tabFloat, 0, coef, data);
         }else
         {
-            preInitThread(nbThread, tabFloat, data[i-1]->fin + 1, data[i-1]->fin + coef, data);
+            preInitThread(nbThread, tabFloat, (&data[i-1])->fin + 1, (&data[i-1])->fin + coef, data);
         }
     }
 
@@ -132,9 +132,9 @@ static void computeResult(/* données récupérées, */ /* résultat */int nbThr
     //Processus de recherche du maximum entre thread
     for(int i = 0; i < nbThread; i++)
     {
-        if (data[i]->*res > *res)
+        if ((&data[i])->res > res)
         {
-            *res = data[i]->*res;
+            res = (&data[i-1])->res;
         }
     }
 }
@@ -154,12 +154,13 @@ static void sendResult(/* fd_pipe_to_client,*/ /* résultat */int fd, float res)
 void service_maximum(int fdSC, int fdCS)
 {
     // initialisations diverses
-    float res;
+    float *res;
     float *tabFloat;
+    int nbTH;
     
-    receiveData(/* paramètres */fdCS,*tabFloat);
-    computeResult(/* paramètres */*tabFloat, res);
-    sendResult(/* paramètres */fdSC, res);
+    receiveData(/* paramètres */fdCS, nbTH, tabFloat);
+    computeResult(/* paramètres */nbTH, tabFloat, res);
+    sendResult(/* paramètres */fdSC, *res);
 
     // libération éventuelle de ressources
 }
