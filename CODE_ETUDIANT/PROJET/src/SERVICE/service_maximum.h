@@ -18,7 +18,7 @@ void myCreate(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routi
 void myJoin(pthread_t thread, void **retval);
 
 /*Initialisation des thread*/
-void preInitThread(int N, int nbThread, float *tabFloat, ThreadData *data);
+void preInitThread(int nbThread, float *tabFloat, int debut, int fin, ThreadData *data);
 
 /*Code des threads du client*/
 void *codeThread(void *var);

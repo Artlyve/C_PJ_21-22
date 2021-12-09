@@ -67,7 +67,7 @@ static void receiveResult(/* fd_pipe_from_service,*/ /* préfixe, */ /* autres p
     // récupération de la somme
     // affichage du préfixe et du résultat
     myRead(fd, &res, sizeof(float));
-    printf("%s: %d",str, res);
+    printf("%s: %f",str, res);
 
 }
 
@@ -81,13 +81,18 @@ static void receiveResult(/* fd_pipe_from_service,*/ /* préfixe, */ /* autres p
 //    - argv[2] : premier nombre
 //    - argv[3] : deuxième nombre
 //    - argv[4] : chaîne à afficher avant le résultat
-void client_somme(/* fd des tubes avec le service, */ int fdCS, int fdSC,int argc, char * argv[])
+void client_somme(/* fd des tubes avec le service, */ int fdCS, int fdSC, int argc, char * argv[])
 {
+    if(argc != 5)
+    {
+        fprintf(stderr, "ERROR ARGUMENT CLIENT_SOMME");
+    }
+
     // variables locales éventuelles
     float val1 =  io_strToFloat(argv[2]);
     float val2 =  io_strToFloat(argv[3]);
-    float *str =  argv[4];
-    float res;
+    char *str =  argv[4];
+    float res = 0.;
     
     sendData(fdCS, val1, val2);
     receiveResult(fdSC, str, res);

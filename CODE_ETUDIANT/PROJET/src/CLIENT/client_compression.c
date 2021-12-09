@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "tubesem.h"
 #include "client_service.h"
@@ -62,7 +63,7 @@ static void receiveResult(/* fd_pipe_from_service,*/ /* autres paramètres si n�
 {
     // récupération de la chaîne compressée
     // affichage du résultat
-    char *str;
+    char *str = "";
     myRead(fd, str, sizeof(char));
 }
 
@@ -75,6 +76,11 @@ static void receiveResult(/* fd_pipe_from_service,*/ /* autres paramètres si n�
 //    - argv[2] : la chaîne à compresser
 void client_compression(/* fd des tubes avec le service, */int fdCS, int fdSC, int argc, char * argv[])
 {
+    if (argc != 3)
+    {
+        fprintf(stderr,"ERROR ARGUMENT CLIENT_COMPRESSION");
+    }
+
     // variables locales éventuelles
     char *str = argv[2];
     sendData(fdCS, str);

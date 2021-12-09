@@ -9,18 +9,6 @@
 
 /*** ---- FONCTIONS ---- ***/
 
-// ---- CLIENT_ORCHESTRE ----
-
-/*Création et initialisation de la structure entre le client et l'orchestre*/
-struct cO *initClientOrchestre(int w, int r,int s)
-{
-	struct cO *co = malloc(sizeof(struct cO));
-	
-	co->sem = s;
-	return co;
-}
-
-
 // ---- SÉMAPHORES ----
 
 /*Création d'un sémaphore et initialisation*/

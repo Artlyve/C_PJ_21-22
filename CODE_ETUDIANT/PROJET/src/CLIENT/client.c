@@ -89,7 +89,12 @@ int main(int argc, char * argv[])
     int key = getKey("client_orchestre.h", CLIENT_ORCHESTRE_ID);
     int semClient = semGet(key);
 
-    char *tsc, *tcs, *password;
+    char *tsc = NULL;
+    char *tcs = NULL;
+    char *password = NULL;
+
+    int tubesc = 0;
+    int tubecs = 0;
     
     // entrée en section critique pour communiquer avec l'orchestre
     takeSem(semClient);
@@ -97,10 +102,10 @@ int main(int argc, char * argv[])
     int tco =myOpen(CLIENT_ORCHESTRE , O_WRONLY);
     int toc = myOpen(ORCHESTRE_CLIENT, O_RDONLY);
     // envoi à l'orchestre du numéro du service
-    myWrite(tco, numService, sizeof(int));
+    myWrite(tco, &numService, sizeof(int));
 
-    int code;
-    myRead(toc, code, sizeof(int));
+    int code = 0;
+    myRead(toc, &code, sizeof(int));
 
     // attente code de retour
     // si code d'erreur
@@ -131,9 +136,9 @@ int main(int argc, char * argv[])
     //     finsi
     //     fermeture des tubes avec le service
     // finsi
-    if(code = REQUEST_ERROR){
+    if(code == REQUEST_ERROR){
         fprintf(stderr, "ERROR Code in Client.c");
-    }else if(code = REQUEST_STOP){
+    }else if(code == REQUEST_STOP){
         printf("Code d'arrêt demandé");
     }else{
         myRead(toc, password, sizeof(char));
@@ -142,26 +147,29 @@ int main(int argc, char * argv[])
        
     }
 
-    myWrite(tco, CONTINUE, sizeof(int));
+    int c = CONTINUE;
+
+    myWrite(tco, &c, sizeof(int));
     
     myClose(toc);
     myClose(tco);
     
 
     letSem(semClient);
-    if(code = REQUEST_AGREE){
-        myOpen(tsc, O_RDONLY);
-        myOpen(tcs, O_WRONLY);
-        myWrite(tcs, password, sizeof(char));
-        myRead(tsc, code, sizeof(int));
+    if(code == REQUEST_AGREE){
+        tubesc = myOpen(tsc, O_RDONLY);
+        tubecs = myOpen(tcs, O_WRONLY);
+        myWrite(tubecs, password, sizeof(char));
+        myRead(tubesc, &code, sizeof(int));
         if(code == CODE_ERROR_PSW){
             fprintf(stderr, "ERROR Code password in Client.c");
         }else{
-            comService(numService, argc, argv, tcs, tsc);
-            myWrite(tcs, RECEIPT, sizeof(int));
+            comService(numService, argc, argv, tubecs, tubesc);
+            int r = RECEIPT;
+            myWrite(tubecs, &r, sizeof(int));
         }
-        myClose(tcs);
-        myClose(tsc);
+        myClose(tubesc);
+        myClose(tubecs);
     }
     // libération éventuelle de ressources
     

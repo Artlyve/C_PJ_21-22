@@ -5,12 +5,14 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "config.h"
 #include "client_orchestre.h"
 #include "orchestre_service.h"
 #include "service.h"
-#include "CLIENT_SERVICE/client_service.h"
+#include "io.h"
+#include "client_service.h"
 
 #define SIZE_MAX 100
 
@@ -101,20 +103,25 @@ int main(int argc, char * argv[])
         //     envoi des noms des tubes nommés au client (via le tube nommé)
         // finsi
         if(ask == REQUEST_STOP){
-            myWrite(toc, REQUEST_AGREE, sizeof(int));
+            int r = REQUEST_AGREE;
+            myWrite(toc, &r, sizeof(int));
             fin = true;
-        }else if(){
+        }/*else if(){
             myWrite(toc, REQUEST_ERROR, sizeof(int));
         }else if(){
             myWrite(toc, REQUEST_ERROR, sizeof(int));
-        }else{
-            myWrite(toc, REQUEST_AGREE, sizeof(int));
+            }*/
+        else{
+            int r = REQUEST_AGREE;
+            myWrite(toc, &r, sizeof(int));
             int size = rand() % SIZE_MAX;
             char *password = randStr(size);
-            myWrite(fdOS, CODE_SERVICE_AGREE, sizeof(int));
-            myWrite(fdOS, password, strlen(password) * sizeof(char));
-            
-            myWrite(toc , CODE_SERVICE_AGREE, sizeof(int));
+
+            int c = CODE_SERVICE_AGREE;
+
+            myWrite(fdOS[1] , &c, sizeof(int));
+            myWrite(fdOS[1], password, strlen(password) * sizeof(char));
+            myWrite(toc , &c, sizeof(int));
 
             
         }

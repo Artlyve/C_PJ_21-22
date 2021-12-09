@@ -5,7 +5,7 @@
 
 #include "myassert.h"
 
-#include "myassert.h"
+#include "io.h"
 
 #include "orchestre_service.h"
 
@@ -15,7 +15,7 @@
 // ---- ORCHESTRE_SERVICE ----
 
 /*Création et initialisation de la structure entre l'orchestre et le service*/
-struct oS *initOrchestreService(int w, int r,int s)
+struct oS *initOrchestreService(int w, int s)
 {
 	struct oS *os = malloc(sizeof(struct oS));
 
@@ -47,19 +47,19 @@ void createFirstService(int pipeOrchestreService)
     //    - tube nommé de service vers client
     int numService = 0;
     int keySem = numService + 1;
-    char * c1 = intToString(pipeOrchestreService);
+    char *c1 = io_intToStr(pipeOrchestreService);
     char * arguments[5] = { 
-        numService,
-        keySem,
+        io_intToStr(numService),
+        io_intToStr(keySem),
         c1,
-        pipe_c2s_0,
-        pipe_s2c_0};
+        "pipe_c2s_0",
+        "pipe_s2c_0"};
         
     int son = fork();
     
     //Fils créé ?
     if (son == -1) {
-       perror("createFirstWorker");
+       perror("createFirstService");
        exit(EXIT_FAILURE);
     }
     

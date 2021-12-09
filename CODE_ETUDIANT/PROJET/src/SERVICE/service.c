@@ -69,8 +69,8 @@ int main(int argc, char * argv[])
         usage(argv[0], "nombre paramètres incorrect");
 
     // initialisations diverses : analyse de argv
-    client_service cs;
-    orchestre_service os;
+    client_service cs = malloc(sizeof(struct cS));
+    orchestre_service os = malloc(sizeof(struct oS));;
 
     int numService = atoi(argv[1]);
     int project_id = atoi(argv[2]);
@@ -108,8 +108,8 @@ int main(int argc, char * argv[])
         
         
         /*********Réception  code **********/
-            int  code;
-            read(os->pipeOrchestreService, &code, sizeof(int));
+            int  code = 0;
+            myRead(os->pipeOrchestreService, &code, sizeof(int));
 
 
             if(code == CODE_END){
@@ -117,26 +117,30 @@ int main(int argc, char * argv[])
             }else{
 
                 /*REception mot de passe de l'orchestre*/
-                int len;
-                char *passwordOrchestre, *passwordClient;
-                read(os->pipeOrchestreService, &len, sizeof(int));
-                read(os->pipeOrchestreService, passwordOrchestre, len *sizeof(char));
+                int len = 0;
+                char *passwordOrchestre = NULL;
+                char *passwordClient = NULL;
+
+                myRead(os->pipeOrchestreService, &len, sizeof(int));
+                myRead(os->pipeOrchestreService, passwordOrchestre, len *sizeof(char));
 
                 /*Ouverture des tube nommés*/
-                cs->tsc = open(namesc, O_WRONLY); //Tube service -> Client
-                cs->tcs = open(namecs, O_WRONLY);//Tube Client ->  service
+                cs->tsc = myOpen(namesc, O_WRONLY); //Tube service -> Client
+                cs->tcs = myOpen(namecs, O_WRONLY);//Tube Client ->  service
 
                 /*Reception du mot de passe du client*/
-                read(cs->tcs, passwordClient, sizeof(char));
+                myRead(cs->tcs, passwordClient, sizeof(char));
 
                 if(!(strcmp(passwordClient, passwordOrchestre))){
-                    write(cs->tsc, CODE_ERROR_PSW, sizeof(int));
+                    int c = CODE_ERROR_PSW;
+                    myWrite(cs->tsc, &c, sizeof(int));
 
                 }else{
-                    write(cs->tsc, CODE_AGREE_PSW, sizeof(int));
+                    int c = CODE_AGREE_PSW;
+                    myWrite(cs->tsc, &c, sizeof(int));
                     callService(numService, cs->tsc, cs->tcs);
-                    close(cs->tcs);
-                    close(cs->tsc);
+                    myClose(cs->tcs);
+                    myClose(cs->tsc);
                 }
 
                 letSem(os->sem);
