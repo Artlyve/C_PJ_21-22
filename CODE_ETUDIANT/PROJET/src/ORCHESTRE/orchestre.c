@@ -71,7 +71,7 @@ int main(int argc, char * argv[])
     while (! fin)
     {
         // ouverture ici des tubes nommés avec un client
-        int tco =myOpen(CLIENT_ORCHESTRE , O_WRONLY);
+        int tco =myOpen(CLIENT_ORCHESTRE , O_RDONLY);
         int toc = myOpen(ORCHESTRE_CLIENT, O_WRONLY);
         // attente d'une demande de service du client
         wait(NULL);

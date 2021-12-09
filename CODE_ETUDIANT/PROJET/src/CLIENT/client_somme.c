@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "tubesem.h"
+#include "io.h"
 #include "client_service.h"
 #include "client_somme.h"
 
@@ -46,9 +48,12 @@ void client_somme_verifArgs(int argc, char * argv[])
 // Les paramètres sont
 // - le file descriptor du tube de communication vers le service
 // - les deux float dont on veut la somme
-static void sendData(/* fd_pipe_to_service,*/ /* entier1, */ /* entier2 */)
+static void sendData(/* fd_pipe_to_service,*/ /* entier1, */ /* entier2 */int fd, float val1, float val2)
 {
     // envoi des deux nombres
+    
+    myWrite(fd, &val1, sizeof(float));
+    myWrite(fd, &val2, sizeof(float));
 }
 
 // ---------------------------------------------
@@ -57,10 +62,13 @@ static void sendData(/* fd_pipe_to_service,*/ /* entier1, */ /* entier2 */)
 // - le file descriptor du tube de communication en provenance du service
 // - le prefixe
 // - autre chose si nécessaire
-static void receiveResult(/* fd_pipe_from_service,*/ /* préfixe, */ /* autres paramètres si nécessaire */)
+static void receiveResult(/* fd_pipe_from_service,*/ /* préfixe, */ /* autres paramètres si nécessaire */ int fd, char *str, float res)
 {
     // récupération de la somme
     // affichage du préfixe et du résultat
+    myRead(fd, &res, sizeof(float));
+    printf("%s: %d",str, res);
+
 }
 
 
@@ -73,10 +81,15 @@ static void receiveResult(/* fd_pipe_from_service,*/ /* préfixe, */ /* autres p
 //    - argv[2] : premier nombre
 //    - argv[3] : deuxième nombre
 //    - argv[4] : chaîne à afficher avant le résultat
-void client_somme(/* fd des tubes avec le service, */ int argc, char * argv[])
+void client_somme(/* fd des tubes avec le service, */ int fdCS, int fdSC,int argc, char * argv[])
 {
     // variables locales éventuelles
-    sendData(/* paramètres */);
-    receiveResult(/* paramètres */);
+    float val1 =  io_strToFloat(argv[2]);
+    float val2 =  io_strToFloat(argv[3]);
+    float *str =  argv[4];
+    float res;
+    
+    sendData(fdCS, val1, val2);
+    receiveResult(fdSC, str, res);
 }
 

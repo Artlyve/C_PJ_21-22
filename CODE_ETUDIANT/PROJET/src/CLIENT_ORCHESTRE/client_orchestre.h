@@ -13,6 +13,7 @@
 #define REQUEST_STOP -1
 #define REQUEST_AGREE 10
 #define REQUEST_ERROR -10
+#define CONTINUE 63
 
 /*Identifiant pour le deuxième paramètre de ftok*/
 #define CLIENT_ORCHESTRE_ID 5
@@ -21,14 +22,6 @@
 #define CLIENT_ORCHESTRE "pipe_c2o"
 #define ORCHESTRE_CLIENT "pipe_o2c"
 
-/*** STRUCTURES ***/
-
-//Structure du client et de l'orchestre 
-struct cO
-{
-	//Semaphore
-	int sem;
-};
 
 
 /*** ---- FONCTIONS ---- ***/
@@ -53,5 +46,17 @@ void linkClientOrchestre(char *pipe_c2o, char *pipe_o2c);
 
 /*Fermeture des pipes*/
 void closePipe(int r, int w);
+
+
+// ---- THREADS CLIENT ----
+
+void myCreate(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg);
+void myJoin(pthread_t thread, void **retval);
+
+/*Initialisation des thread*/
+void preInitThread(int N, int nbThread, bool *tab, ThreadData *data);
+
+/*Code des threads du client*/
+void *codeThread(void *var);
 
 #endif
