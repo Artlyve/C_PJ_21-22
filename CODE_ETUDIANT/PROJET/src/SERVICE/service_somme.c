@@ -44,8 +44,6 @@ static void sendResult(/* fd_pipe_to_client,*/ /* résultat */int fd, float res)
     printf("Sending data");
     
     myWrite(fd, &res, sizeof(float));
-
-
 }
 
 
@@ -55,11 +53,12 @@ static void sendResult(/* fd_pipe_to_client,*/ /* résultat */int fd, float res)
 void service_somme(/* fd tubes nommés avec un client */int fdSC, int fdCS)
 {
     // initialisations diverses
-    float *res; 
-    float *data1, *data2;
-    receiveData(fdCS, *data1, *data2);
-    computeResult(*data1, *data2, *res);
-    sendResult(fdSC, *res);
+    float res; 
+    float data1, data2;
+    
+    receiveData(fdCS, data1, data2);
+    computeResult(data1, data2, res);
+    sendResult(fdSC, res);
 
     // libération éventuelle de ressources
 }

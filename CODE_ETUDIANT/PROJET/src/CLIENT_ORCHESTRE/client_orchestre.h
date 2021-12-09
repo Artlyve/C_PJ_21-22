@@ -31,15 +31,6 @@ struct cO
 };
 
 
-//Structure pour les thread
-typedef struct
-{
-    int thValue;
-    int value;
-    bool * res;
-}ThreadData;
-
-
 /*** ---- FONCTIONS ---- ***/
 
 
@@ -62,17 +53,5 @@ void linkClientOrchestre(char *pipe_c2o, char *pipe_o2c);
 
 /*Fermeture des pipes*/
 void closePipe(int r, int w);
-
-
-// ---- THREADS CLIENT ----
-
-void myCreate(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg);
-void myJoin(pthread_t thread, void **retval);
-
-/*Initialisation des thread*/
-void preInitThread(int N, int nbThread, bool *tab, ThreadData *data);
-
-/*Code des threads du client*/
-void *codeThread(void *var);
 
 #endif
