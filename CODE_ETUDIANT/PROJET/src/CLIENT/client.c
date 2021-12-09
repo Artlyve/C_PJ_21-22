@@ -1,3 +1,7 @@
+/*PIERRE Guillaume
+SALIHI Valdrin
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -127,9 +131,9 @@ int main(int argc, char * argv[])
     //     finsi
     //     fermeture des tubes avec le service
     // finsi
-    if(code == REQUEST_ERROR){
+    if(code = REQUEST_ERROR){
         fprintf(stderr, "ERROR Code in Client.c");
-    }else if(code == REQUEST_STOP){
+    }else if(code = REQUEST_STOP){
         printf("Code d'arrêt demandé");
     }else{
         myRead(toc, password, sizeof(char));
@@ -145,7 +149,7 @@ int main(int argc, char * argv[])
     
 
     letSem(semClient);
-    if(){
+    if(code = REQUEST_AGREE){
         myOpen(tsc, O_RDONLY);
         myOpen(tcs, O_WRONLY);
         myWrite(tcs, password, sizeof(char));
