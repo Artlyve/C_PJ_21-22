@@ -13,6 +13,7 @@
 #define REQUEST_STOP -1
 #define REQUEST_AGREE 10
 #define REQUEST_ERROR -10
+#define CONTINUE 63
 
 /*Identifiant pour le deuxième paramètre de ftok*/
 #define CLIENT_ORCHESTRE_ID 5
@@ -21,23 +22,6 @@
 #define CLIENT_ORCHESTRE "pipe_c2o"
 #define ORCHESTRE_CLIENT "pipe_o2c"
 
-/*** STRUCTURES ***/
-
-//Structure du client et de l'orchestre 
-struct cO
-{
-	//Semaphore
-	int sem;
-};
-
-
-//Structure pour les thread
-typedef struct
-{
-    int thValue;
-    int value;
-    bool * res;
-}ThreadData;
 
 
 /*** ---- FONCTIONS ---- ***/

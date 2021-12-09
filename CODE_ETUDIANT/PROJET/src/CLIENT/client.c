@@ -27,6 +27,43 @@ static void usage(const char *exeName, const char *message)
     exit(EXIT_FAILURE);
 }
 
+void verifArg(int num, int argc, char **argv){
+    switch (num)
+    {
+    case 0:
+        client_somme_verifArgs(argc, argv);
+        break;
+    case 1:
+        client_compression_verifArgs(argc, argv);
+        break;
+    case 2:
+        client_maximum_verifArgs(argc, argv);
+        break;
+    case REQUEST_STOP:
+        client_arret_verifArgs(argc, argv);
+        break;
+    default:
+        break;
+    }
+}
+
+void comService(int num, int argc, char **argv, int fdcs, int fdsc){
+    switch (num)
+    {
+    case 0:
+        client_somme(fdcs, fdsc, argc, argv);
+        break;
+    case 1:
+        client_compression(fdcs, fdsc, argc, argv);
+        break;
+    case 2:
+        client_maximum(fdcs, fdcs, argc, argv);
+        break;
+    default:
+        break;
+    }
+}
+
 int main(int argc, char * argv[])
 {
     if (argc < 2)
@@ -42,14 +79,24 @@ int main(int argc, char * argv[])
     //         ou . client_somme_verifArgs
     //         ou . client_compression_verifArgs
     //         ou . client_maximum_verifArgs
-
-    // initialisations diverses s'il y a lieu
-
-    // entrée en section critique pour communiquer avec l'orchestre
+    verifArg(numService, argc, argv);
     
-    // ouverture des tubes avec l'orchestre
+    // initialisations diverses s'il y a lieu
+    int key = getKey("client_orchestre.h", CLIENT_ORCHESTRE_ID);
+    int semClient = semGet(key);
 
+    char *tsc, *tcs, *password;
+    
+    // entrée en section critique pour communiquer avec l'orchestre
+    takeSem(semClient);
+    // ouverture des tubes avec l'orchestre
+    int tco =myOpen(CLIENT_ORCHESTRE , O_WRONLY);
+    int toc = myOpen(ORCHESTRE_CLIENT, O_RDONLY);
     // envoi à l'orchestre du numéro du service
+    myWrite(tco, numService, sizeof(int));
+
+    int code;
+    myRead(toc, code, sizeof(int));
 
     // attente code de retour
     // si code d'erreur
@@ -80,7 +127,38 @@ int main(int argc, char * argv[])
     //     finsi
     //     fermeture des tubes avec le service
     // finsi
+    if(code == REQUEST_ERROR){
+        fprintf(stderr, "ERROR Code in Client.c");
+    }else if(code == REQUEST_STOP){
+        printf("Code d'arrêt demandé");
+    }else{
+        myRead(toc, password, sizeof(char));
+        myRead(toc, tsc, sizeof(char));
+        myRead(toc, tcs, sizeof(char));
+       
+    }
 
+    myWrite(tco, CONTINUE, sizeof(int));
+    
+    myClose(toc);
+    myClose(tco);
+    
+
+    letSem(semClient);
+    if(){
+        myOpen(tsc, O_RDONLY);
+        myOpen(tcs, O_WRONLY);
+        myWrite(tcs, password, sizeof(char));
+        myRead(tsc, code, sizeof(int));
+        if(code == CODE_ERROR_PSW){
+            fprintf(stderr, "ERROR Code password in Client.c");
+        }else{
+            comService(numService, argc, argv, tcs, tsc);
+            myWrite(tcs, RECEIPT, sizeof(int));
+        }
+        myClose(tcs);
+        myClose(tsc);
+    }
     // libération éventuelle de ressources
     
     return EXIT_SUCCESS;

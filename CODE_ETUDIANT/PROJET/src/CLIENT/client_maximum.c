@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "tubesem.h"
+#include "io.h"
 #include "client_service.h"
 #include "client_maximum.h"
 
@@ -47,9 +49,13 @@ void client_maximum_verifArgs(int argc, char * argv[])
 // - le file descriptor du tube de communication vers le service
 // - le nombre de threads que doit utiliser le service
 // - le tableau de float dont on veut le maximum
-static void sendData(/* fd_pipe_to_service,*/ /* nbre_threads, */ /* tableau_de_float_à_envoyer */)
+static void sendData(/* fd_pipe_to_service,*/ /* nbre_threads, */ /* tableau_de_float_à_envoyer */int fd, int nbTh, float *tabF)
 {
     // envoi du nombre de threads et du tableau de float
+    myWrite(fd, nbTh, sizeof(int));
+    myWrite(fd, tabF,  sizeof(tabF));
+
+
 }
 
 // ---------------------------------------------
@@ -57,10 +63,13 @@ static void sendData(/* fd_pipe_to_service,*/ /* nbre_threads, */ /* tableau_de_
 // Les paramètres sont
 // - le file descriptor du tube de communication en provenance du service
 // - autre chose si nécessaire
-static void receiveResult(/* fd_pipe_from_service,*/ /* autres paramètres si nécessaire */)
+static void receiveResult(/* fd_pipe_from_service,*/ /* autres paramètres si nécessaire */int fd)
 {
     // récupération du maximum
     // affichage du résultat
+    int max;
+    myRead(fd, max, sizeof(float));
+    printf("Maximum: %d", max);
 }
 
 
@@ -72,10 +81,17 @@ static void receiveResult(/* fd_pipe_from_service,*/ /* autres paramètres si n�
 // Cette fonction analyse argv et en déduit les données à envoyer
 //    - argv[2] : nombre de threads
 //    - argv[3] à argv[argc-1]: les nombres flottants
-void client_maximum(/* fd des tubes avec le service, */ int argc, char * argv[])
+void client_maximum(/* fd des tubes avec le service, */int fdCS, int fdSC, int argc, char * argv[])
 {
     // variables locales éventuelles
-    sendData(/* paramètres */);
-    receiveResult(/* paramètres */);
+    int nbTH = io_strToInt(argv[2]);
+    int len = argc - 3;
+    float tab[len];
+    for(int i = 0; i < len; i++){
+        tab[i] = io_strToFloat(argv[3+i]);
+    }
+
+    sendData(fdCS, nbTH, tab);
+    receiveResult(fdSC);
 }
 

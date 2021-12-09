@@ -6,6 +6,7 @@
 
 #define CODE_ERROR_PSW 951
 #define CODE_AGREE_PSW 159
+#define RECEIPT 1111
 
 #define CLIENT_SERVICE_0 "pipe_c2s_0"
 #define SERVICE_CLIENT_0 "pipe_s2c_0"
