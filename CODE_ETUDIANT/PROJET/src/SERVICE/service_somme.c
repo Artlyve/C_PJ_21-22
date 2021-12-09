@@ -33,13 +33,14 @@ static void receiveData(/* fd_pipe_from_client, */ /* données à récupérer */
 }
 
 // fonction de traitement des données
-static void computeResult(/* données récupérées, */ /* résultat */float data1, float data2, float res)
+static void computeResult(/* données récupérées, */ /* résultat */float data1, float data2, float *res)
 {
-    res = data1 + data2;
+    float summ = data1 + data2;
+    res = &summ;
 }
 
 // fonction d'envoi du résultat
-static void sendResult(/* fd_pipe_to_client,*/ /* résultat */int fd, float res)
+static void sendResult(/* fd_pipe_to_client,*/ /* résultat */int fd, float *res)
 {
     printf("Sending data");
     
@@ -53,8 +54,9 @@ static void sendResult(/* fd_pipe_to_client,*/ /* résultat */int fd, float res)
 void service_somme(/* fd tubes nommés avec un client */int fdSC, int fdCS)
 {
     // initialisations diverses
-    float res; 
-    float data1, data2;
+    float *res = NULL; 
+    float data1 = 0.;
+    float data2 = 0.;
     
     receiveData(fdCS, data1, data2);
     computeResult(data1, data2, res);

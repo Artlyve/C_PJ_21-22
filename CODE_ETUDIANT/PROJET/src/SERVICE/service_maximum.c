@@ -64,7 +64,6 @@ void *codeThread(void *var)
     ThreadData *d = (ThreadData*) var;
 
     int i;
-    int len = length(d->tabValue);
 
     float maximum = d->tabValue[0];
 
@@ -87,7 +86,7 @@ static void receiveData(/* fd_pipe_from_client, */ /* données à récupérer */
 {
     printf("Receive data\n");
 
-    myRead(fd, nbThread, sizeof(int));
+    myRead(fd, &nbThread, sizeof(int));
 
     myRead(fd, tabFloat, sizeof(float));
 }
@@ -104,11 +103,11 @@ static void computeResult(/* données récupérées, */ /* résultat */int nbThr
     // pré-initialisation des données
     for(int i = 0; i < nbThread; i++)
     {
-        if (i = nbThread - 1)
+        if (i == nbThread - 1)
         {
             preInitThread(nbThread, tabFloat, (&data[i-1])->fin + 1, len, data);
         }
-        else if (i = 0)
+        else if (i == 0)
         {
             preInitThread(nbThread, tabFloat, 0, coef, data);
         }else
@@ -154,9 +153,9 @@ static void sendResult(/* fd_pipe_to_client,*/ /* résultat */int fd, float res)
 void service_maximum(int fdSC, int fdCS)
 {
     // initialisations diverses
-    float *res;
-    float *tabFloat;
-    int nbTH;
+    float *res = NULL;
+    float *tabFloat = NULL;
+    int nbTH = 0;
     
     receiveData(/* paramètres */fdCS, nbTH, tabFloat);
     computeResult(/* paramètres */nbTH, tabFloat, res);

@@ -35,8 +35,9 @@ static void computeResult(/* données récupérées, */ /* résultat */char *dat
     res = malloc( sizeof(char) * len);
     int count = 0;
     int i  = 0;
-    while(data[i] != "\n"){
-        if(strcmp(data[i], data[i+1])){
+    while(data[i] != '\0'){
+        if(data[i] == data[i+1])
+        {
             count++;
         }else{
             res[i] = count;
@@ -63,12 +64,12 @@ static void sendResult(/* fd_pipe_to_client,*/ /* résultat */ int fd, char *res
 void service_compression(int fdSC, int fdCS)
 {
     // initialisations diverses
-    char *res;
-    char *data;
+    char *res = NULL;
+    char *data = NULL;
 
-    receiveData(/* paramètres */fdCS, *data);
-    computeResult(/* paramètres */*data, *res);
-    sendResult(/* paramètres */fdSC, *res);
+    receiveData(/* paramètres */fdCS, data);
+    computeResult(/* paramètres */data, res);
+    sendResult(/* paramètres */fdSC, res);
 
     // libération éventuelle de ressources
     free(res);

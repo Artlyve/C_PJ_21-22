@@ -52,7 +52,7 @@ void client_maximum_verifArgs(int argc, char * argv[])
 static void sendData(/* fd_pipe_to_service,*/ /* nbre_threads, */ /* tableau_de_float_à_envoyer */int fd, int nbTh, float *tabF)
 {
     // envoi du nombre de threads et du tableau de float
-    myWrite(fd, nbTh, sizeof(int));
+    myWrite(fd, &nbTh, sizeof(int));
     myWrite(fd, tabF,  sizeof(tabF));
 
 
@@ -67,9 +67,9 @@ static void receiveResult(/* fd_pipe_from_service,*/ /* autres paramètres si n�
 {
     // récupération du maximum
     // affichage du résultat
-    int max;
-    myRead(fd, max, sizeof(float));
-    printf("Maximum: %d", max);
+    float max;
+    myRead(fd, &max, sizeof(float));
+    printf("Maximum: %f", max);
 }
 
 

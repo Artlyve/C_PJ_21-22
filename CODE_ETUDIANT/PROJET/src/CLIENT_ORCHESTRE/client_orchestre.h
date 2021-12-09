@@ -26,13 +26,6 @@
 
 /*** ---- FONCTIONS ---- ***/
 
-
-// ---- CLIENT_ORCHESTRE ----
-
-/*Création et initialisation de la structure entre le client et l'orchestre*/
-struct cO *initClientOrchestre(int w, int r,int s);
-
-
 // ---- SÉMAPHORES ----
 
 /*Création d'un sémaphore et initialisation*/
@@ -46,17 +39,5 @@ void linkClientOrchestre(char *pipe_c2o, char *pipe_o2c);
 
 /*Fermeture des pipes*/
 void closePipe(int r, int w);
-
-
-// ---- THREADS CLIENT ----
-
-void myCreate(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg);
-void myJoin(pthread_t thread, void **retval);
-
-/*Initialisation des thread*/
-void preInitThread(int N, int nbThread, bool *tab, ThreadData *data);
-
-/*Code des threads du client*/
-void *codeThread(void *var);
 
 #endif

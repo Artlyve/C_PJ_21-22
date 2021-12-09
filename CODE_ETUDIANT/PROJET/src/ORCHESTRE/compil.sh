@@ -11,6 +11,7 @@ includeDirectories="-I. \
                     -I../CONFIG \
                     -I../SERVICE \
                     -I../CLIENT_ORCHESTRE \
+                    -I../CLIENT_SERVICE \
                     -I../ORCHESTRE_SERVICE"
 
 #------------
@@ -31,6 +32,7 @@ commun="../UTILS/myassert.c \
         ../UTILS/tubesem.c \
         ../CONFIG/config.c \
         ../CLIENT_ORCHESTRE/client_orchestre.c \
+        ../CLIENT_SERVICE/client_service.c \
         ../ORCHESTRE_SERVICE/orchestre_service.c"
 
 #------------

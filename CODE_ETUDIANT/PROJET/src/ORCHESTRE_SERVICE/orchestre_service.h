@@ -29,7 +29,7 @@ struct oS
     int pipeOrchestreService; //tube vers le service (write)
 
     //Semaphore
-    int sem
+    int sem;
 };
 
 /*** ---- FONCTIONS ---- ***/
@@ -38,7 +38,7 @@ struct oS
 // ---- Orchestre ----
 
 /*Création et initialisation de la structure d'orchestre*/
-struct oS *initOrchestreService(int w, int r,int s);
+struct oS *initOrchestreService(int w, int s);
 
 // ---- SÉMAPHORES ----
 
