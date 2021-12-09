@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "service.h": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "config.h": "c"
     }
 }
