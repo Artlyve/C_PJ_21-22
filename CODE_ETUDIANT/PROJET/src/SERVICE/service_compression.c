@@ -3,13 +3,13 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
-#include <assert.h>
 #include <sys/wait.h>
 
 #include "orchestre_service.h"
 #include "client_service.h"
 
 #include "service_compression.h"
+#include "tubesem.h"
 #include "myassert.h"
 
 // définition éventuelle de types pour stocker les données
@@ -24,7 +24,7 @@ static void receiveData(/* fd_pipe_from_client, */ /* données à récupérer */
 {
     printf("Receive data\n");
 
-    read(fd, data, strlen(data) *sizeof(char));
+    myRead(fd, data, strlen(data) *sizeof(char));
 
 }
 
@@ -52,7 +52,7 @@ static void sendResult(/* fd_pipe_to_client,*/ /* résultat */ int fd, char *res
 {
     printf("Sending data");
     
-    write(fd, res, strlen(res) * sizeof(char) );
+    myWrite(fd, res, strlen(res) * sizeof(char) );
 
 }
 
@@ -60,7 +60,7 @@ static void sendResult(/* fd_pipe_to_client,*/ /* résultat */ int fd, char *res
 /*----------------------------------------------*
  * fonction appelable par le main
  *----------------------------------------------*/
-void service_compression(/* fd tubes nommés avec un client */int fdSC, int fdCS)
+void service_compression(int fdSC, int fdCS)
 {
     // initialisations diverses
     char *res;

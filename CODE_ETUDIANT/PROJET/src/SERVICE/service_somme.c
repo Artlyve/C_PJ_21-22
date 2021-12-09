@@ -3,13 +3,13 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
-#include <assert.h>
 #include <sys/wait.h>
 
 #include "orchestre_service.h"
 #include "client_service.h"
 
 #include "service_somme.h"
+#include "tubesem.h"
 #include "myassert.h"
 
 // définition éventuelle de types pour stocker les données
@@ -24,10 +24,10 @@ static void receiveData(/* fd_pipe_from_client, */ /* données à récupérer */
 {
     printf("Receive data\n");
 
-    read(fd, &data1, sizeof(float));
+    myRead(fd, &data1, sizeof(float));
 
     
-    read(fd, &data2, sizeof(float));
+    myRead(fd, &data2, sizeof(float));
 
     
 }
@@ -43,7 +43,7 @@ static void sendResult(/* fd_pipe_to_client,*/ /* résultat */int fd, float res)
 {
     printf("Sending data");
     
-    write(fd, &res, sizeof(float) );
+    myWrite(fd, &res, sizeof(float));
 
 
 }
