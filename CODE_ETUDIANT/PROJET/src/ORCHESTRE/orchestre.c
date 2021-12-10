@@ -48,10 +48,10 @@ int main(int argc, char * argv[])
 
     // Pour la communication avec les clients
     // - création de 2 tubes nommés pour converser avec les clients
-    linkOrchestreClient(CLIENT_ORCHESTRE, ORCHESTRE_CLIENT);
+    linkClientOrchestre(CLIENT_ORCHESTRE, ORCHESTRE_CLIENT);
     // - création d'un sémaphore pour que deux clients ne
     //   ne communiquent pas en même temps avec l'orchestre
-    int semClient = semCreation(CLIENT_ORCHESTRE_ID, 1);
+    int semClient = semCreationCO(CLIENT_ORCHESTRE_ID, 1);
     // lancement des services, avec pour chaque service :
     // - création d'un tube anonyme pour converser (orchestre vers service)
     int fdOS[2];
@@ -76,7 +76,7 @@ int main(int argc, char * argv[])
     while (! fin)
     {
         // ouverture ici des tubes nommés avec un client
-        int tco =myOpen(CLIENT_ORCHESTRE , O_RDONLY);
+        int tco = myOpen(CLIENT_ORCHESTRE , O_RDONLY);
         int toc = myOpen(ORCHESTRE_CLIENT, O_WRONLY);
         // attente d'une demande de service du client
         wait(NULL);

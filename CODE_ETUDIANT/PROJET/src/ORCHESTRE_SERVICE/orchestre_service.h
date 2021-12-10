@@ -43,7 +43,7 @@ struct oS *initOrchestreService(int w, int s);
 // ---- SÉMAPHORES ----
 
 /*Création d'un sémaphore et initialisation*/
-int semCreation(int key, int initVal);
+int semCreationOS(int key, int initVal);
 
 //Création du premier service
 void createFirstService(int pipeOrchestreService);

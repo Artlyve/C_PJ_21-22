@@ -27,7 +27,7 @@ struct oS *initOrchestreService(int w, int s)
 // ---- SÉMAPHORES ----
 
 /*Création d'un sémaphore et initialisation*/
-int semCreation(int key, int initVal)
+int semCreationOS(int key, int initVal)
 {
 	int semClient = semCreator(key);
     semSetVal(semClient,initVal);

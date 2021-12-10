@@ -29,7 +29,7 @@
 // ---- SÉMAPHORES ----
 
 /*Création d'un sémaphore et initialisation*/
-int semCreation(int key, int initVal);
+int semCreationCO(int key, int initVal);
 
 
 // ---- TUBES ----
