@@ -35,7 +35,6 @@ int semCreation(int key, int initVal)
     return semClient;
 }
 
-// À REMODIFIER ...
 void createFirstService(int pipeOrchestreService)
 {
     
