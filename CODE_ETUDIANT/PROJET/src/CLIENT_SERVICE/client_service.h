@@ -17,6 +17,7 @@
 #define CLIENT_SERVICE_2 "pipe_c2s_2"
 #define SERVICE_CLIENT_2 "pipe_s2c_2"
 
+//Structure relation client - Service
 struct cS{
     int tcs;
     int tsc;
