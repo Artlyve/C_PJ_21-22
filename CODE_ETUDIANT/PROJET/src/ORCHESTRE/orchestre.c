@@ -128,6 +128,13 @@ int main(int argc, char * argv[])
 
         // attente d'un accusé de réception du client
         // fermer les tubes vers le client
+        int receipt = 0;
+        myRead(tco, &receipt, sizeof(int));
+        if(receipt == CONTINUE){
+            myClose(toc);
+            myClose(tco);
+            
+        }
 
         // il peut y avoir un problème si l'orchestre revient en haut de la
         // boucle avant que le client ait eu le temps de fermer les tubes
